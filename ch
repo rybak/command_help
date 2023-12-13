@@ -40,10 +40,13 @@ file="$(mktemp /tmp/command_help_XXXXXXX.txt)"
 cmd_type=$(type -t "$cmd")
 if [[ "$cmd_type" == 'builtin' ]]; then
     help -m "$cmd" > "$file"
-elif [[ "$cmd_type" == 'file' ]]; then
-    man "$cmd" | col -bx > "$file"
 else
-    echo "Error: $cmd is not a valid command" 1>&2 && exit 1
+    man_file=$(mktemp)
+    if man "$cmd" > "$man_file"; then
+        col -bx < "$man_file" > "$file"
+    else
+        echo "Error: cannot find man page '$cmd'" 1>&2 && exit 1
+    fi
 fi
 
 
