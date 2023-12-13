@@ -31,7 +31,7 @@ extract_text ()
 ###############################################
 cmd="$1"
 shift
-file='/tmp/command_help.txt'
+file="$(mktemp /tmp/command_help_XXXXXXX.txt)"
 
 
 ###############################################
